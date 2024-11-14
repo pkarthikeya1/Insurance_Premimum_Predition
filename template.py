@@ -5,9 +5,10 @@ list_of_files= [
     f"src/__init__.py",
     f"src/components/__init__.py",
     f"src/pipelines/__init__.py",
-    f"src/logging.py",
-    f"src/custom_exception.py",
+    f"src/logger.py",
+    f"src/exception.py",
     f"notebooks/research.ipynb",
+    f"src/utils.py"
     f"requirements.txt",
     ".gitignore"
 ]
