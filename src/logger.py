@@ -17,4 +17,4 @@ logging.basicConfig(
         logging.FileHandler(log_filepath)
     ]
 )
-logger=logging.getLogger("datasciencelogger")
+logger=logging.getLogger("Insurance_Premium_Prediction_Logger")

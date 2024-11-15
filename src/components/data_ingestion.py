@@ -1,9 +1,11 @@
 import os
-from src.logger import logger
+from dataclasses import dataclass
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from dataclasses import dataclass
+
 from src.utils import DatabaseHandler
+from src.logger import logger
 
 
 @dataclass
@@ -24,7 +26,11 @@ class DataIngestion:
         try :
             logger.info("Establishing Connection with SQLite databse")
             db_handler = DatabaseHandler()
+            
+            os.makedirs(os.path.join("artifacts",'self.ingestion.config.raw_data_path'), exist_ok=True)
+
             raw_data = db_handler.initating_data_extraction_from_database()
+
             logger.info("Successfuly read the raw data as dataframe")
 
             db_handler.disconnect()
@@ -48,5 +54,11 @@ class DataIngestion:
             )
 
         except Exception as e:
-            logger.error("Probelm initating the data ingestion method {e}")
+            logger.info("Probelm initating the data ingestion method {e}")
             raise e
+        
+
+
+if __name__=="__main__":
+    obj=DataIngestion()
+    raw_data, train_data, test_data=obj.initiate_data_ingestion()

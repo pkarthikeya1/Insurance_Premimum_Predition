@@ -2,7 +2,6 @@ import sqlite3
 import pandas as pd
 from dataclasses import dataclass
 
-from sklearn.model_selection import train_test_split
 
 from src.db_paths import db_path, table_name, query
 from src.logger import logger
@@ -26,14 +25,16 @@ class DatabaseHandler:
         try:
             self.connection = sqlite3.connect(self.db_config.database_path)
             self.cursor = self.connection.cursor()
-            logger.log("Successfully connected to the SQLite database.")
+            logger.info("Successfully connected to the SQLite database.")
         except sqlite3.Error as e:
-            logger.log(f"Error connecting to database: {e}")
+            logger.info(f"Error connecting to database: {e}")
 
         try:
-            return pd.read_sql_query(self.db_config.sql_query, self.connection)
+            df= pd.read_sql_query(self.db_config.sql_query, self.connection)
+            return df
+        
         except Exception as e:
-            logger.log(f"Error reading SQLite to DataFrame: {e}")
+            logger.info(f"Error reading SQLite to DataFrame: {e}")
 
     def disconnect(self) -> None:
         """
@@ -42,8 +43,8 @@ class DatabaseHandler:
         try:
             if self.connection:
                 self.connection.close()
-                logger.log("Disconnected from the SQLite database.")
+                logger.info("Disconnected from the SQLite database.")
 
         except Exception as e:
-            logger.error(f"Error closing SQLite database connection: {e}")
+            logger.info(f"Error closing SQLite database connection: {e}")
             raise e
