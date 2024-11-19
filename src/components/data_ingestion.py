@@ -1,11 +1,20 @@
+import sys
 import os
+
+# Add the root directory (Insurance_Premium_Prediction) to the system path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
+
+# Now you can import from src
+import src.utils
+
 from dataclasses import dataclass
 
-import pandas as pd
 from sklearn.model_selection import train_test_split
 
 from src.utils import DatabaseHandler
+
 from src.logger import logger
+
 
 
 @dataclass
@@ -26,7 +35,7 @@ class DataIngestion:
         try :
             logger.info("Establishing Connection with SQLite databse")
             db_handler = DatabaseHandler()
-            
+
             os.makedirs(os.path.join("artifacts",'self.ingestion.config.raw_data_path'), exist_ok=True)
 
             raw_data = db_handler.initating_data_extraction_from_database()
@@ -62,3 +71,4 @@ class DataIngestion:
 if __name__=="__main__":
     obj=DataIngestion()
     raw_data, train_data, test_data=obj.initiate_data_ingestion()
+
