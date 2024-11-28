@@ -54,28 +54,29 @@ class DatabaseHandler:
 
 ###############################################################
 
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, mean_squared_error
+import numpy as np
 
-def evaluate_models(X_train, y_train, X_test, y_test, models):
+def evaluate_model(X_train, y_train, X_test, y_test, model):
 
     try:
-        report = {}
+        
 
+        model.fit(X_train, y_train) 
 
-        for i in range(len(models)):
-            model = list(models.values())[i]
+        y_train_pred = model.predict(X_train)
 
-            model.fit(X_train, y_train) 
+        y_test_pred  = model.predict(X_test)
 
-            y_train_pred = model.predict(X_train)
+        train_model_r2_score = r2_score(y_train, y_train_pred)
 
-            y_test_pred  = model.predict(X_test)
+        test_model_r2_score = r2_score(y_test, y_test_pred)
+        
+        train_RMSE = np.sqrt(mean_squared_error(y_train, y_train_pred))
 
-            train_model_score = r2_score(y_train, y_train_pred)
+        test_RMSE = np.sqrt(mean_squared_error(y_test, y_test_pred))
 
-            test_model_score = r2_score(y_test, y_test_pred)
-
-            report[list(models.keys())[i]] = test_model_score
+        report = {'train_R2_score':train_model_r2_score, 'test_R2_score':test_model_r2_score, 'train_RMSE': train_RMSE, 'test_RMSE': test_RMSE}
 
         return report
 
