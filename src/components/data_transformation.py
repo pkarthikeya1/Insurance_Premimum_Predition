@@ -95,6 +95,7 @@ class DataTransformation:
             
             input_feature_arr = prerprocessing_obj.fit_transform(train_df.drop(columns=self.data_columns.target, axis=1))
 
+            transformed_columns = prerprocessing_obj.get_feature_names_out()
 
             input_test_arr = prerprocessing_obj.transform(test_df.drop(columns=self.data_columns.target, axis=1))
 
@@ -109,10 +110,14 @@ class DataTransformation:
             return (
                 train_arr,
                 test_arr,
-                self.data_transformation_config.preprocessor_obj_file_path
+                self.data_transformation_config.preprocessor_obj_file_path,
+                transformed_columns
+                
             )
         except Exception as e:
             raise e
+            
+            
             
                         
             

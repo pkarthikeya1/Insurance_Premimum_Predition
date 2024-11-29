@@ -61,7 +61,6 @@ def evaluate_model(X_train, y_train, X_test, y_test, model):
 
     try:
         
-
         model.fit(X_train, y_train) 
 
         y_train_pred = model.predict(X_train)
@@ -82,4 +81,11 @@ def evaluate_model(X_train, y_train, X_test, y_test, model):
 
     except Exception as e:
         raise e
-    
+
+def get_important_features(model, features):
+    importances = pd.DataFrame(model.feature_importances_)
+    importances['features'] = features
+    importances.columns = ['importance', 'features']
+    importances.sort_values(by = 'importance', ascending= False,inplace=True)
+
+    return importances
