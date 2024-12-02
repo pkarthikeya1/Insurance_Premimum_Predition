@@ -1,7 +1,3 @@
-Based on your provided structure, here's an improved and formatted version for your README or documentation file:
-
----
-
 # **Insurance Premium Prediction Project**
 
 This project aims to predict health insurance premiums using a comprehensive dataset containing 1 million records. The data includes demographic and lifestyle factors, enabling accurate premium estimation through advanced machine learning models. This repository contains modular code and a Streamlit interface for real-time predictions.
