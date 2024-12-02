@@ -1,6 +1,6 @@
 # **Insurance Premium Prediction Project**
 
-This project aims to predict health insurance premiums using a comprehensive dataset containing 1 million records. The data includes demographic and lifestyle factors, enabling accurate premium estimation through advanced machine learning models. This repository contains modular code and a Streamlit interface for real-time predictions.
+This project aims to predict health insurance premiums using a dataset with 1 million records. The data includes various factors influencing medical costs, such as demographics and lifestyle attributes. The project involves comprehensive data preprocessing, exploratory analysis, machine learning model development, and deployment through a Streamlit interface. The modular code design ensures scalability and maintainability.
 
 ---
 
@@ -10,66 +10,145 @@ This project aims to predict health insurance premiums using a comprehensive dat
 Insurance_Premium_Prediction/
 │
 ├── notebooks/
-│   ├── 01_Data_Ingestion.ipynb       # Data loading from source
-│   ├── 02_EDA.ipynb                  # Exploratory Data Analysis
-│   ├── 03_Data_Transformation.ipynb  # Data preprocessing and transformation
-│   ├── 04_Model_Experimentation.ipynb  # Model selection and experimentation
-│   ├── 05_Model_Training.ipynb       # Final model training and evaluation
-│   └── frontend.ipynb                # Streamlit frontend development
+│   ├── 01_Data_Ingestion.ipynb          # Load data from Database.db and initial exploration
+│   ├── 02_EDA.ipynb                     # In-depth exploratory data analysis with visualizations
+│   ├── 03_Data_Transformation.ipynb     # Data cleaning, transformation, and feature engineering
+│   ├── 04_Model_Experimentation.ipynb   # Model selection, hyperparameter tuning, and comparison
+│   ├── 05_Model_Training.ipynb          # Final training and performance evaluation
+│   └── frontend.ipynb                   # Prototyping the Streamlit frontend
 │
 ├── src/
 │   ├── components/
-│   │   ├── data_ingestion.py         # Handles data loading and initial processing
-│   │   ├── data_transformation.py    # Cleans, transforms, and preprocesses data
-│   │   └── model_trainer.py          # Model training pipeline
+│   │   ├── data_ingestion.py            # Handles data loading and basic validation from Database.db
+│   │   ├── data_transformation.py       # Feature scaling, encoding, and outlier handling
+│   │   └── model_trainer.py             # Model training, validation, and saving to disk
 │   │
 │   ├── pipelines/
-│   │   ├── prediction_pipeline.py    # Handles the end-to-end prediction workflow
-│   │   └── training_pipeline.py      # Orchestrates the training process
+│   │   ├── prediction_pipeline.py       # Preprocessing and inference pipeline for real-time predictions
+│   │   └── training_pipeline.py         # End-to-end pipeline for model training and evaluation
 │   │
-│   ├── constants.py                   # Global constants and configurations
-│   ├── db_paths.py                    # Manages paths to database files
-│   ├── frontend.py                    # Streamlit application code
-│   ├── logger.py                      # Logging setup for the project
-│   └── utils.py                       # Utility functions for data handling and evaluation
+│   ├── constants.py                      # Configuration file for global constants (paths, hyperparameters)
+│   ├── db_paths.py                       # Manages database connection paths and table definitions
+│   ├── frontend.py                       # Streamlit code to interact with the model via a web interface
+│   ├── logger.py                         # Logging setup for error handling, data tracking, and debugging
+│   └── utils.py                          # Helper functions for data manipulation, evaluation, and visualization
 │
-├── requirements.txt                   # Dependencies needed for the project
-└── README.md                          # Project documentation (this file)
+├── requirements.txt                      # List of Python dependencies and their versions
+└── README.md                             # Project documentation (this file)
 ```
 
 ---
 
-### **Key Components:**
+## 🚀 **Objective**
 
-1. **Notebooks:**
-   - Step-by-step workflows covering data ingestion, exploration, transformation, model training, and frontend setup.
-
-2. **Source Code (`src/`):**
-   - **Components:** Modular scripts for data handling and model training.
-   - **Pipelines:** End-to-end workflows for training and prediction.
-   - **Frontend:** Code for the interactive Streamlit application.
-   - **Logger:** Manages consistent logging across all modules.
-
-3. **Dependencies:**
-   - Listed in `requirements.txt` for easy setup and environment replication.
+Predict health insurance premiums based on key demographic and lifestyle attributes, including:
+- Age
+- Gender
+- Body Mass Index (BMI)
+- Number of children
+- Smoking status
+- Region
+- Occupation
+- Type of insurance plan
 
 ---
 
-### 💡 **Usage Instructions:**
+## 📊 **Dataset Overview**
 
-1. **Setup the Environment:**
+- **Source:** `Insurance_Prediction` table from `Database.db`  
+- **Total Records:** 1,000,000  
+- **Data Splits:**
+  - **Training Set:** 700,000 records  
+  - **Validation Set:** 200,000 records  
+  - **Live/Production Data:** 100,000 records for real-time evaluation  
+
+---
+
+## 🛠️ **Technical Implementation**
+
+### 📌 **Key Steps:**
+
+1. **Data Ingestion:**
+   - Load data from a SQLite database.
+   - Validate data integrity and handle missing values.
+
+2. **Exploratory Data Analysis (EDA):**
+   - Visualize feature distributions, correlations, and identify outliers.
+   - Generate insights into feature impact on insurance premiums.
+
+3. **Data Transformation:**
+   - Encode categorical variables.
+   - Scale numerical features.
+   - Engineer new features for better predictive performance.
+
+4. **Model Development:**
+   - **Selected Model:** Gradient Boosting Regressor
+   - **Why Gradient Boosting?** Performed best in terms of accuracy and interpretability compared to Linear Regression, Random Forest, and XGBoost.
+   - **Metrics Used:** 
+     - Mean Absolute Error (MAE)
+     - Root Mean Squared Error (RMSE)
+     - R² Score
+
+5. **Model Training Pipeline:**
+   - Modular code for training, validation, and saving the model.
+   - Hyperparameter tuning and cross-validation to avoid overfitting.
+
+6. **Prediction Pipeline:**
+   - Ensures consistency in data preprocessing for real-time predictions.
+   - Deploys a trained model for inference.
+
+7. **Frontend (Streamlit Application):**
+   - Interactive UI for inputting customer data.
+   - Provides real-time premium predictions with a user-friendly interface.
+
+---
+
+## 💻 **How to Run the Project**
+
+### 1. **Setup the Environment:**
    ```bash
    pip install -r requirements.txt
    ```
 
-2. **Run the Streamlit Application:**
+### 2. **Run the Streamlit Application:**
    ```bash
    streamlit run src/frontend.py
    ```
 
-3. **Train the Model:**
-   - Execute `src/pipelines/training_pipeline.py` to retrain the model with updated data.
+### 3. **Train the Model:**
+   Execute the training pipeline to retrain the model:
+   ```bash
+   python src/pipelines/training_pipeline.py
+   ```
 
 ---
 
-This organized structure ensures modularity, making the codebase scalable and maintainable for future enhancements.
+## 📈 **Evaluation Metrics and Performance**
+
+- **Training Performance:** MAE: `...`, RMSE: `...`, R²: `...`
+- **Validation Performance:** MAE: `...`, RMSE: `...`, R²: `...`
+- **Feature Importance (Top 4):**
+  1. Smoking status
+  2. BMI
+  3. Age
+  4. Type of insurance plan
+
+---
+
+## 🌐 **Streamlit Application Features**
+
+- **Input Fields:** User-friendly form for entering customer data (age, BMI, etc.)
+- **Real-time Prediction:** Calculate and display the predicted insurance premium.
+- **Model Explainability:** Display top influencing factors for the prediction.
+
+---
+
+## 📜 **License**
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+
+## 👩‍💻 **Author**
+[Karthikeya Pervela]  
+[pervela.karthikeya@gmail.com]
+---
