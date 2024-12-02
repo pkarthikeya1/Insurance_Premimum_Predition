@@ -79,11 +79,10 @@ Predict health insurance premiums based on key demographic and lifestyle attribu
 3. **Data Transformation:**
    - Encode categorical variables.
    - Scale numerical features.
-   - Engineer new features for better predictive performance.
 
 4. **Model Development:**
-   - **Selected Model:** Gradient Boosting Regressor
-   - **Why Gradient Boosting?** Performed best in terms of accuracy and interpretability compared to Linear Regression, Random Forest, and XGBoost.
+   - **Selected Model:** Random Forest Regressor
+   - **Why Gradient Boosting?** Performed best in terms of Feature importance, R² compared to Linear Regression and XGBoost.
    - **Metrics Used:** 
      - Mean Absolute Error (MAE)
      - Root Mean Squared Error (RMSE)
@@ -125,13 +124,12 @@ Predict health insurance premiums based on key demographic and lifestyle attribu
 
 ## 📈 **Evaluation Metrics and Performance**
 
-- **Training Performance:** MAE: `...`, RMSE: `...`, R²: `...`
-- **Validation Performance:** MAE: `...`, RMSE: `...`, R²: `...`
+- **Testing Performance:** RMSE: `1416.15`, R²: `0.803`
 - **Feature Importance (Top 4):**
-  1. Smoking status
-  2. BMI
-  3. Age
-  4. Type of insurance plan
+  1. Coverage Level
+  2. Smoker Status  No
+  3. Family Medical History High blood pressure
+  4. Smoker Status  Yes
 
 ---
 
