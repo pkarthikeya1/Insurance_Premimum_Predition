@@ -82,7 +82,6 @@ Predict health insurance premiums based on key demographic and lifestyle attribu
 
 4. **Model Development:**
    - **Selected Model:** Random Forest Regressor
-   - **Why Gradient Boosting?** Performed best in terms of Feature importance, R² compared to Linear Regression and XGBoost.
    - **Metrics Used:** 
      - Mean Absolute Error (MAE)
      - Root Mean Squared Error (RMSE)
