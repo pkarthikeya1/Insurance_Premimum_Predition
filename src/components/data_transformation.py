@@ -37,68 +37,52 @@ class DataTransformation:
         self.data_columns = DataColumns()
 
     def get_data_transformer_object(self):
-
-        """
-        This function is responisble for data transformation
-    
-        """
         try:
+            num_pipeline = Pipeline([
+                ("imputer", SimpleImputer(strategy="median")),
+                ("scaler", StandardScaler())
+            ])
 
+            cat_pipeline = Pipeline([
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                ("OneHotEncoder", OneHotEncoder()),
+                ("scaler", StandardScaler(with_mean=False))
+            ])
             
-
-            num_pipeline = Pipeline(
-
-                steps=[
-                    ("imputer", SimpleImputer(strategy="median")),
-                    ("scaler", StandardScaler())]
-            )
-
-            cat_pipeline = Pipeline(
-
-                steps=[
-                    ("imputer", SimpleImputer(strategy="most_frequent")),
-                    ("OneHotEncoder", OneHotEncoder()),
-                    ("scaler", StandardScaler(with_mean=False))]
-            )
-            logger.info("Numerical columns standard scaling completed")
-            logger.info("Categorical columns encoding completed")
+            logger.info("Numerical and categorical pipelines created")
             
-            preprocessor = ColumnTransformer(
-                [
-                    # ("Duplicate_Dropper", duplicate_pipeline, self.data_columns.Numerical_Columns+self.data_columns.Categorical_Columns),
-                    ("Numerical_Pipeline", num_pipeline, self.data_columns.Numerical_Columns),
-                    ("Categorical_Pipeline", cat_pipeline, self.data_columns.Categorical_Columns)
-                     ]
-            )
+            preprocessor = ColumnTransformer([
+                ("Numerical_Pipeline", num_pipeline, self.data_columns.Numerical_Columns),
+                ("Categorical_Pipeline", cat_pipeline, self.data_columns.Categorical_Columns)
+            ])
 
-
-            preprocessor_obj = jl.dump(preprocessor,self.data_transformation_config.preprocessor_obj_file_path)
-            
-            logger.info(f"saved preprocessor as joblib file in the path {self.data_transformation_config.preprocessor_obj_file_path}")
-            return preprocessor
+            return preprocessor  
         except Exception as e:
             raise e
 
-    def initiate_data_transformation(self, train_path, test_path):
 
+    def initiate_data_transformation(self, train_path, test_path):
         try:
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
             
             logger.info("Reading train and test data completed")
 
-            logger.info("Obtaining preprocessing object")
+            # Get the preprocessor object
+            preprocessing_obj = self.get_data_transformer_object()
 
-            prerprocessing_obj = self.get_data_transformer_object()
-
-            logger.info("Applying preprocessor on train dataset and test dataset")
+            # Fit and transform training data
+            input_feature_arr = preprocessing_obj.fit_transform(train_df.drop(columns=self.data_columns.target, axis=1))
+            transformed_columns = preprocessing_obj.get_feature_names_out()
             
-            input_feature_arr = prerprocessing_obj.fit_transform(train_df.drop(columns=self.data_columns.target, axis=1))
+            # Save the fitted preprocessor
+            jl.dump(preprocessing_obj, self.data_transformation_config.preprocessor_obj_file_path)
+            logger.info(f"Saved fitted preprocessor to {self.data_transformation_config.preprocessor_obj_file_path}")
+            
+            # Transform the test data
+            input_test_arr = preprocessing_obj.transform(test_df.drop(columns=self.data_columns.target, axis=1))
 
-            transformed_columns = prerprocessing_obj.get_feature_names_out()
-
-            input_test_arr = prerprocessing_obj.transform(test_df.drop(columns=self.data_columns.target, axis=1))
-
+            # Combine transformed features with target column
             train_arr = np.c_[
                 input_feature_arr, np.array(train_df[self.data_columns.target].values)
             ]
@@ -112,12 +96,10 @@ class DataTransformation:
                 test_arr,
                 self.data_transformation_config.preprocessor_obj_file_path,
                 transformed_columns
-                
             )
         except Exception as e:
             raise e
-            
-            
+
             
                         
             
